@@ -10,22 +10,24 @@ export default Ember.Mixin.create({
     var page = page ? page : this.get('url');
     var title = title ? title : this.get('url');
 
-    if (Ember.get(ENV, 'googleAnalytics.webPropertyId') != null) {
-      var trackerType = Ember.getWithDefault(ENV, 'googleAnalytics.tracker', 'analytics.js');
+    Ember.run.schedule('afterRender', this, function() {
+      if (Ember.get(ENV, 'googleAnalytics.webPropertyId') != null) {
+        var trackerType = Ember.getWithDefault(ENV, 'googleAnalytics.tracker', 'analytics.js');
 
-      if (trackerType === 'analytics.js') {
-        var globalVariable = Ember.getWithDefault(ENV, 'googleAnalytics.globalVariable', 'ga');
+        if (trackerType === 'analytics.js') {
+          var globalVariable = Ember.getWithDefault(ENV, 'googleAnalytics.globalVariable', 'ga');
 
-        this.beforePageviewToGA(window[globalVariable]);
+          this.beforePageviewToGA(window[globalVariable]);
 
-        window[globalVariable]('send', 'pageview', {
-          page: page,
-          title: title
-        });
-      } else if (trackerType === 'ga.js') {
-        window._gaq.push(['_trackPageview']);
+          window[globalVariable]('send', 'pageview', {
+            page: page,
+            title: title
+          });
+        } else if (trackerType === 'ga.js') {
+          window._gaq.push(['_trackPageview']);
+        }
       }
-    }
+    })
   })
 
 });

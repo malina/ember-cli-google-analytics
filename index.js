@@ -79,7 +79,7 @@ module.exports = {
   contentFor: function(type, config) {
     var googleAnalyticsConfig = merge({}, googleAnalyticsConfigDefaults, config.googleAnalytics || {});
 
-    if (type === 'head' && googleAnalyticsConfig.webPropertyId != null) {
+    if (type === 'body-footer' && googleAnalyticsConfig.webPropertyId != null) {
       var content;
 
       if (googleAnalyticsConfig.tracker === 'analytics.js') {
